@@ -85,7 +85,7 @@ def test_gtgram():
             inputs['fs'],
             inputs['twin'],
             inputs['thop'],
-            inputs['channels'],
+            int(inputs['channels']),
             inputs['fmin']
         )
 

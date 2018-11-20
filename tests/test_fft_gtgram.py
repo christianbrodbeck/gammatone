@@ -53,7 +53,7 @@ def test_fft_specgram_window():
 class FFTGtgramWindowTester:
 
     def __init__(self, name, args, expected):
-        self.nfft = args[0].squeeze()
+        self.nfft = int(args[0].squeeze())
         self.nwin = args[1].squeeze()
         self.expected = expected[0].squeeze()
 
@@ -75,7 +75,7 @@ def test_fft_gtgram():
             inputs['fs'],
             inputs['twin'],
             inputs['thop'],
-            inputs['channels'],
+            int(inputs['channels']),
             inputs['fmin']
         )
 
