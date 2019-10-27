@@ -12,6 +12,7 @@ This module contains functions for rendering "spectrograms" which use gammatone
 filterbanks instead of Fourier transforms.
 """
 
+
 def round_half_away_from_zero(num):
     """ Implement the round-half-away-from-zero rule, where fractional parts of
     0.5 result in rounding up to the nearest positive integer for positive
@@ -26,18 +27,10 @@ def gtgram_strides(fs, window_time, hop_time, filterbank_cols):
     
     @return a tuple of (window_size, hop_samples, output_columns)
     """
-    nwin        = int(round_half_away_from_zero(window_time * fs))
-    hop_samples = int(round_half_away_from_zero(hop_time * fs))
-    columns     = (1
-                    + int(
-                        np.floor(
-                            (filterbank_cols - nwin)
-                            / hop_samples
-                        )
-                    )
-                  )
-        
-    return (nwin, hop_samples, columns)
+    nwin = round_half_away_from_zero(window_time * fs)
+    hop_samples = round_half_away_from_zero(hop_time * fs)
+    columns = 1 + int(np.floor((filterbank_cols - nwin) / hop_samples))
+    return nwin, hop_samples, columns
 
 
 def gtgram_xe(wave, fs, channels, f_min, f_max):
@@ -50,7 +43,23 @@ def gtgram_xe(wave, fs, channels, f_min, f_max):
 
 
 def gtgram(wave, fs, window_time, hop_time, channels, f_min, f_max=None):
-    """
+    """Spectrogram-like time frequency magnitude array based on gammatone filters
+
+    Parameters
+    ----------
+    wave : array
+        Sound wave data.
+    fs : float
+        Sampling rate of ``wave``.
+    window_time : float
+        Window for integrating gammatone filter output (in s).
+    hop_time : float
+        Time step between samples in the output.
+    channels : int
+        Number of channels in the output (i.e., number of filters).
+
+    Notes
+    -----
     Calculate a spectrogram-like time frequency magnitude array based on
     gammatone subband filters. The waveform ``wave`` (at sample rate ``fs``) is
     passed through an multi-channel gammatone auditory model filterbank, with
@@ -65,12 +74,7 @@ def gtgram(wave, fs, window_time, hop_time, channels, f_min, f_max=None):
     """
     xe = gtgram_xe(wave, fs, channels, f_min, f_max)
     
-    nwin, hop_samples, ncols = gtgram_strides(
-        fs,
-        window_time,
-        hop_time,
-        xe.shape[1]
-    )
+    nwin, hop_samples, ncols = gtgram_strides(fs, window_time, hop_time, xe.shape[1])
     
     y = np.zeros((channels, ncols))
     

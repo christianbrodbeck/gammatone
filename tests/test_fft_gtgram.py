@@ -31,7 +31,7 @@ def load_reference_data():
     zipped_data = zip(data[INPUT_KEY], data[MOCK_KEY], data[RESULT_KEY])
     for inputs, mocks, refs in zipped_data:
         input_dict = dict(zip(INPUT_COLS, inputs))
-        mock_dict  = dict(zip(MOCK_COLS, mocks))
+        mock_dict = dict(zip(MOCK_COLS, mocks))
         ref_dict = dict(zip(RESULT_COLS, refs))
 
         yield (input_dict, mock_dict, ref_dict)
@@ -49,6 +49,7 @@ def test_fft_specgram_window():
         )
 
         yield FFTGtgramWindowTester(inputs['name'], args, expected)
+
 
 class FFTGtgramWindowTester:
 
@@ -88,6 +89,7 @@ def test_fft_gtgram():
             refs['res']
         )
 
+
 class FFTGammatonegramTester:
     """ Testing class for gammatonegram calculation """
 
@@ -115,6 +117,7 @@ class FFTGammatonegramTester:
             diagnostic = "Maximum difference: {:6e}".format(max_diff)
 
             assert np.allclose(result, self.expected, rtol=1e-6, atol=1e-12), diagnostic
+
 
 if __name__ == '__main__':
     nose.main()

@@ -12,6 +12,7 @@ import numpy as np
 import gammatone.filters as filters
 import gammatone.gtgram as gtgram
 
+
 def specgram_window(
         nfft,
         nwin,

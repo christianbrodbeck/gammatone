@@ -97,6 +97,7 @@ def test_gtgram():
             refs['gtgram']
         )
 
+
 class GammatonegramTester:
     """ Testing class for gammatonegram calculation """
 
@@ -109,16 +110,12 @@ class GammatonegramTester:
         self.description = "Gammatonegram for {:s}".format(name)
 
     def __call__(self):
-        with patch(
-            'gammatone.gtgram.erb_filterbank',
-            return_value=self.erb_fb_out):
-
+        with patch('gammatone.gtgram.erb_filterbank', return_value=self.erb_fb_out):
             result = gammatone.gtgram.gtgram(self.signal, *self.args)
-
             max_diff = np.max(np.abs(result - self.expected))
             diagnostic = "Maximum difference: {:6e}".format(max_diff)
-
             assert np.allclose(result, self.expected, rtol=1e-6, atol=1e-12), diagnostic
+
 
 if __name__ == '__main__':
     nose.main()
