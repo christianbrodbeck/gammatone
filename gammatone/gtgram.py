@@ -3,6 +3,8 @@
 # This file is part of the gammatone toolkit, and is licensed under the 3-clause
 # BSD license: https://github.com/detly/gammatone/blob/master/COPYING
 from __future__ import division
+from math import copysign, floor
+
 import numpy as np
 
 from .filters import make_erb_filters, centre_freqs, erb_filterbank
@@ -18,7 +20,7 @@ def round_half_away_from_zero(num):
     0.5 result in rounding up to the nearest positive integer for positive
     numbers, and down to the nearest negative number for negative integers.
     """
-    return np.sign(num) * np.floor(np.abs(num) + 0.5)
+    return int(copysign(floor(abs(num) + 0.5), num))
 
 
 def gtgram_strides(fs, window_time, hop_time, filterbank_cols):
